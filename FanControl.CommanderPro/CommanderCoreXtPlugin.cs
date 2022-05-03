@@ -5,28 +5,28 @@ using System.Linq;
 
 namespace FanControl.CommanderPro
 {
-    public class CommanderCorePlugin : IPlugin
+    public class CommanderCoreXtPlugin : IPlugin
     {
         #region Private objects
 
-        private const String ErrorLogFileName = "CommanderCORE.err.log";
+        private const String ErrorLogFileName = "CommanderCORE_XT.err.log";
 
 #if DEBUG
-        private const String TraceLogFileName = "CommanderCORE.trc.log";
+        private const String TraceLogFileName = "CommanderCORE_XT.trc.log";
 #else
         private const String TraceLogFileName = "";
 #endif
 
-        private Core.CommanderCore CommanderCore;
+        private Core.CommanderCoreXt CommanderCore;
 
         #endregion
 
         #region Public objects
 
-        public String Name => "Corsair Commander CORE";
+        public String Name => "Corsair Commander CORE XT";
 
         #endregion
-        
+
         public void Close()
         {
             if (!String.IsNullOrWhiteSpace(TraceLogFileName))
@@ -44,7 +44,7 @@ namespace FanControl.CommanderPro
         {
             System.IO.File.AppendAllText(TraceLogFileName, "Plugin initializing" + Environment.NewLine);
 
-            CommanderCore = new Core.CommanderCore();
+            CommanderCore = new Core.CommanderCoreXt();
 
             CommanderCore.Connect();
         }
@@ -62,10 +62,6 @@ namespace FanControl.CommanderPro
             foreach (Int32 channel in CommanderCore.GetFanChannels())
             {
                 _fanSensors.Add(new FanSensor { CommanderInstance = CommanderCore, Channel = channel });
-
-                //Don't allow the AIO pump to be controlled
-                if (channel == 0) continue;
-
                 //_controlSensors.Add(new ControlSensor { CommanderInstance = CommanderCore, Channel = channel });
             }
 

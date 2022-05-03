@@ -47,9 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommanderCoreXtPlugin.cs" />
     <Compile Include="Core\CommanderCore.cs" />
     <Compile Include="CommanderCorePlugin.cs" />
     <Compile Include="Core\CommanderCoreSWMode.cs" />
+    <Compile Include="Core\CommanderCoreXt.cs" />
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Pro\CommanderPro.cs" />
     <Compile Include="ControlSensor.cs" />

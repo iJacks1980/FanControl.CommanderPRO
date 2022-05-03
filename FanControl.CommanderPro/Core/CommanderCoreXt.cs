@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace FanControl.CommanderPro.Core
 {
-    public class CommanderCore : ICommander
+    public class CommanderCoreXt : ICommander
     {
         #region Private objects
 
-        private const String ErrorLogFileName = "CommanderCORE.err.log";
+        private const String ErrorLogFileName = "CommanderCORE_XT.err.log";
 
 #if DEBUG
-        private const String TraceLogFileName = "CommanderCORE.trc.log";
+        private const String TraceLogFileName = "CommanderCORE_XT.trc.log";
 #else
         private const String TraceLogFileName = "";
 #endif
@@ -32,13 +32,13 @@ namespace FanControl.CommanderPro.Core
 
         #region Properties
 
-        public DeviceType Type => DeviceType.Core;
+        public DeviceType Type => DeviceType.Core_Xt;
 
         #endregion
 
         #region Constructor
 
-        public CommanderCore()
+        public CommanderCoreXt()
         {
             try
             {
@@ -190,7 +190,7 @@ namespace FanControl.CommanderPro.Core
 
                         Disconnect();
                     }
-                    
+
                 }
                 catch (Exception exception)
                 {
@@ -527,7 +527,7 @@ namespace FanControl.CommanderPro.Core
         {
             foreach (HidSharp.HidDevice hidDevice in HidSharp.DeviceList.Local.GetHidDevices(0x1b1c))
             {
-                if (hidDevice.ProductID == 0x0c1c && hidDevice.GetMaxInputReportLength() > 0 && hidDevice.GetMaxOutputReportLength() > 0)
+                if (hidDevice.ProductID == 0x0c2a && hidDevice.GetMaxInputReportLength() > 0 && hidDevice.GetMaxOutputReportLength() > 0)
                 {
                     device = hidDevice;
 
