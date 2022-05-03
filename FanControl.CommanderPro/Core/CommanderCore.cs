@@ -527,12 +527,44 @@ namespace FanControl.CommanderPro.Core
 
         private Boolean ConnectToCommanderCore()
         {
-            return HidSharp.DeviceList.Local.TryGetHidDevice(out device, 0x1b1c, 0x0c1c);
+            Boolean result = false;
+
+            foreach (HidSharp.HidDevice hidDevice in HidSharp.DeviceList.Local.GetHidDevices(0x1b1c))
+            {
+                if (hidDevice.ProductID == 0x0c1c && hidDevice.GetMaxInputReportLength() > 0 && hidDevice.GetMaxOutputReportLength() > 0)
+                {
+                    device = hidDevice;
+
+                    result = true;
+
+                    break;
+                }
+            }
+
+            //return HidSharp.DeviceList.Local.TryGetHidDevice(out device, 0x1b1c, 0x0c1c);
+
+            return result;
         }
 
         private Boolean ConnectToCommanderCoreXt()
         {
-            return HidSharp.DeviceList.Local.TryGetHidDevice(out device, 0x1b1c, 0x0c2a);
+            Boolean result = false;
+
+            foreach (HidSharp.HidDevice hidDevice in HidSharp.DeviceList.Local.GetHidDevices(0x1b1c))
+            {
+                if (hidDevice.ProductID == 0x0c2a && hidDevice.GetMaxInputReportLength() > 0 && hidDevice.GetMaxOutputReportLength() > 0)
+                {
+                    device = hidDevice;
+
+                    result = true;
+
+                    break;
+                }
+            }
+
+            //return HidSharp.DeviceList.Local.TryGetHidDevice(out device, 0x1b1c, 0x0c2a);
+
+            return result;
         }
 
         private Byte[] SendCommand(Byte[] command, Byte[] data = null, Boolean disconnectIfError = true)
