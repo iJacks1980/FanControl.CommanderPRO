@@ -34,6 +34,10 @@ namespace FanControl.CommanderPro
                         }
 
                         break;
+                    case DeviceType.Core_Xt:
+                        result = $"Commander CORE XT Channel {Channel}";
+
+                        break;
                 }
 
                 return result;
