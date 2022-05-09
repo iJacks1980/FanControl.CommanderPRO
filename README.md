@@ -37,3 +37,31 @@
 ## Known Issues
 
 * If Corsair iCUE is installed you will get random data at best, nothing at worst.  Sadly the way that the hardware works means things have to be one or the other :(
+
+## Version history
+
+## [v1.0.0](https://github.com/iJacks1980/FanControl.CommanderPRO/releases/tag/v1.0.0)
+
+Initial release supporting Commander PRO fans only.
+
+## [v1.0.1](https://github.com/iJacks1980/FanControl.CommanderPRO/releases/tag/v1.0.1a)
+
+Beta release with added support for reading temperature values from the probes connected to the Commander PRO.
+
+## [v1.0.2](https://github.com/iJacks1980/FanControl.CommanderPRO/releases/tag/v1.0.2a)
+
+Beta release with partial support for Commander CORE device (may also work with Commander CORE XT).
+
+## [v1.0.3](https://github.com/iJacks1980/FanControl.CommanderPRO/releases/tag/v1.0.3a)
+
+Beta release with support for Commander PRO, CORE and CORE XT.
+
+## [v1.0.3](https://github.com/iJacks1980/FanControl.CommanderPRO/releases/tag/v1.0.4)
+
+Updated release supporting FanControl v113.
+
+Supports:
+
+Command PRO - Read and set fan speed. Read temperature probes.
+Commander CORE - Read fan speed. Read temperature probes.
+Commander CORE XT - Read fan speed. Read temperature probes.
