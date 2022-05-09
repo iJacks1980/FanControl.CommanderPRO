@@ -56,7 +56,7 @@ Beta release with partial support for Commander CORE device (may also work with 
 
 Beta release with support for Commander PRO, CORE and CORE XT.
 
-## [v1.0.3](https://github.com/iJacks1980/FanControl.CommanderPRO/releases/tag/v1.0.4)
+## [v1.0.4](https://github.com/iJacks1980/FanControl.CommanderPRO/releases/tag/v1.0.4)
 
 Updated release supporting FanControl v113.
 
