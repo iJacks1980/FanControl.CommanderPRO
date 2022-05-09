@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace FanControl.CommanderPro
 {
-    public class CommanderCorePlugin : IPlugin
+    public class CommanderCorePlugin : IPlugin2
     {
         #region Private objects
 
@@ -77,6 +77,14 @@ namespace FanControl.CommanderPro
             if (_fanSensors.Any()) _container.FanSensors.AddRange(_fanSensors);
             if (_controlSensors.Any()) _container.ControlSensors.AddRange(_controlSensors);
             if (_temperatureSensors.Any()) _container.TempSensors.AddRange(_temperatureSensors);
+        }
+
+        public void Update()
+        {
+            if (!String.IsNullOrWhiteSpace(TraceLogFileName))
+            {
+                System.IO.File.AppendAllText(TraceLogFileName, "Plugin Update method called" + Environment.NewLine);
+            }
         }
     }
 }

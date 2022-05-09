@@ -4,9 +4,21 @@ using System.Collections.Generic;
 
 namespace FanControl.CommanderPro
 {
-    public class CommanderProPlugin : IPlugin
+    public class CommanderProPlugin : IPlugin2
     {
+        #region Private objects
+
+        private const String ErrorLogFileName = "CommanderCORE.err.log";
+
+#if DEBUG
+        private const String TraceLogFileName = "CommanderCORE.trc.log";
+#else
+        private const String TraceLogFileName = "";
+#endif
+
         private Pro.CommanderPro CommanderPro;
+
+        #endregion
 
         public String Name => "Corsair Commander PRO";
 
@@ -47,6 +59,14 @@ namespace FanControl.CommanderPro
                 _container.FanSensors.AddRange(_fanSensors);
                 _container.TempSensors.AddRange(_temperatureSensor);
                 _container.ControlSensors.AddRange(_controlSensors);
+            }
+        }
+
+        public void Update()
+        {
+            if (!String.IsNullOrWhiteSpace(TraceLogFileName))
+            {
+                System.IO.File.AppendAllText(TraceLogFileName, "Plugin Update method called" + Environment.NewLine);
             }
         }
     }
