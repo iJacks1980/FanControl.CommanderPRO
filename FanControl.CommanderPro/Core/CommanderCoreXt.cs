@@ -230,7 +230,10 @@ namespace FanControl.CommanderPro.Core
 
                     if (ChecksumMatches(response, Constants.DATA_TYPE_SW_CONNECTED))
                     {
-                        System.IO.File.AppendAllText(TraceLogFileName, $"\tFan channel data {BitConverter.ToString(response)}" + Environment.NewLine);
+                        if (!String.IsNullOrWhiteSpace(TraceLogFileName))
+                        {
+                            System.IO.File.AppendAllText(TraceLogFileName, $"\tFan channel data {BitConverter.ToString(response)}" + Environment.NewLine);
+                        }
 
                         Int32 totalDevices = response[6];
 

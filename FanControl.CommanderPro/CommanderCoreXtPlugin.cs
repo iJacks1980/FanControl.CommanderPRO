@@ -42,7 +42,10 @@ namespace FanControl.CommanderPro
 
         public void Initialize()
         {
-            System.IO.File.AppendAllText(TraceLogFileName, "Plugin initializing" + Environment.NewLine);
+            if (!String.IsNullOrWhiteSpace(TraceLogFileName))
+            {
+                System.IO.File.AppendAllText(TraceLogFileName, "Plugin initializing" + Environment.NewLine);
+            }
 
             CommanderCore = new Core.CommanderCoreXt();
 
@@ -51,7 +54,10 @@ namespace FanControl.CommanderPro
 
         public void Load(IPluginSensorsContainer _container)
         {
-            System.IO.File.AppendAllText(TraceLogFileName, "Plugin loading" + Environment.NewLine);
+            if (!String.IsNullOrWhiteSpace(TraceLogFileName))
+            {
+                System.IO.File.AppendAllText(TraceLogFileName, "Plugin loading" + Environment.NewLine);
+            }
 
             List<FanSensor> _fanSensors = new List<FanSensor>();
             List<ControlSensor> _controlSensors = new List<ControlSensor>();
