@@ -39,6 +39,7 @@
 
 * If Corsair iCUE (or any other software that reads from Commander devices such as HWiNFO64) is installed and running you will get random data at best, nothing at worst.  Sadly the way that the hardware works means things have to be one or the other :(
 	* There is a workaround for HWiNFO64, go into the main setting for HWiNFO64 under the safety tab and uncheck the "CorsairLink and Asetek Support".  This will prevent HWiNFO64 from trying to read from Corair Commander devices (fan, pump and temperature data)
+* Commander CORE devices will loose all RGB, sadly this is down to the way in which the Commander CORE/CORE XT RGB is handled.  In order to read and/or control the fans the device must be put into "software mode" - in this mode the RGB is entirely controlled by iCUE and the hardware fallback is switched off.  Right now there is no way around this, as I would need to fully decode the RGB control data and implement some form of configuration - which is way beyond the scope of this project.
 
 ## Version history
 
