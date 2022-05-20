@@ -1,23 +1,16 @@
-﻿using FanControl.Plugins;
+﻿using FanControl.Commander.Common;
+using FanControl.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FanControl.CommanderPro
+namespace FanControl.CommanderCore
 {
-    public class CommanderCorePlugin : IPlugin2
+    public class Plugin : IPlugin2
     {
         #region Private objects
 
-        private const String ErrorLogFileName = "CommanderCORE.err.log";
-
-#if DEBUG
-        private const String TraceLogFileName = "CommanderCORE.trc.log";
-#else
-        private const String TraceLogFileName = "";
-#endif
-
-        private Core.CommanderCore CommanderCore;
+        private DeviceManager CommanderCore;
 
         #endregion
 
@@ -26,12 +19,38 @@ namespace FanControl.CommanderPro
         public String Name => "Corsair Commander CORE";
 
         #endregion
-        
+
+        #region Constructor
+
+        public Plugin()
+        {
+            try
+            {
+                if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME) && System.IO.File.Exists(Constants.TRACE_LOG_FILE_NAME))
+                {
+                    System.IO.File.Delete(Constants.TRACE_LOG_FILE_NAME);
+                }
+
+                if (!String.IsNullOrWhiteSpace(Constants.ERROR_LOG_FILE_NAME) && System.IO.File.Exists(Constants.ERROR_LOG_FILE_NAME))
+                {
+                    System.IO.File.Delete(Constants.ERROR_LOG_FILE_NAME);
+                }
+            }
+            catch (Exception exception)
+            {
+
+            }
+        }
+
+        #endregion
+
+        #region Public methods
+
         public void Close()
         {
-            if (!String.IsNullOrWhiteSpace(TraceLogFileName))
+            if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
             {
-                System.IO.File.AppendAllText(TraceLogFileName, "Plugin closing" + Environment.NewLine);
+                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Plugin closing" + Environment.NewLine);
             }
 
             if (CommanderCore != null)
@@ -42,28 +61,26 @@ namespace FanControl.CommanderPro
 
         public void Initialize()
         {
-            if (!String.IsNullOrWhiteSpace(TraceLogFileName))
+            if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
             {
-                System.IO.File.AppendAllText(TraceLogFileName, "Plugin initializing" + Environment.NewLine);
+                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Plugin initializing" + Environment.NewLine);
             }
 
-            CommanderCore = new Core.CommanderCore();
+            CommanderCore = new DeviceManager();
 
             CommanderCore.Connect();
         }
 
         public void Load(IPluginSensorsContainer _container)
         {
-            if (!String.IsNullOrWhiteSpace(TraceLogFileName))
+            if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
             {
-                System.IO.File.AppendAllText(TraceLogFileName, "Plugin loading" + Environment.NewLine);
+                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Plugin loading" + Environment.NewLine);
             }
 
             List<FanSensor> _fanSensors = new List<FanSensor>();
             List<ControlSensor> _controlSensors = new List<ControlSensor>();
             List<TemperatureSensor> _temperatureSensors = new List<TemperatureSensor>();
-
-            CommanderCore.GetFirmwareVersion();
 
             foreach (Int32 channel in CommanderCore.GetFanChannels())
             {
@@ -87,10 +104,12 @@ namespace FanControl.CommanderPro
 
         public void Update()
         {
-            if (!String.IsNullOrWhiteSpace(TraceLogFileName))
+            if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
             {
-                System.IO.File.AppendAllText(TraceLogFileName, "Plugin Update method called" + Environment.NewLine);
+                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Plugin Update method called" + Environment.NewLine);
             }
         }
+
+        #endregion
     }
 }

@@ -1,9 +1,9 @@
 ﻿using FanControl.Plugins;
 using System;
 
-namespace FanControl.CommanderPro
+namespace FanControl.Commander.Common
 {
-    public class FanSensor : IPluginSensor
+    public class TemperatureSensor : IPluginSensor
     {
         public ICommander CommanderInstance { get; set; }
 
@@ -20,22 +20,22 @@ namespace FanControl.CommanderPro
                 switch (CommanderInstance.Type)
                 {
                     case DeviceType.Pro:
-                        result = $"Commander PRO Channel {Channel + 1}";
+                        result = $"Sensor {Channel + 1}";
 
                         break;
                     case DeviceType.Core:
                         if (Channel == 0)
                         {
-                            result = "Commander CORE AIO Pump";
+                            result = $"AIO Liquid Temperature";
                         }
                         else
                         {
-                            result = $"Commander CORE Channel {Channel}";
+                            result = $"Sensor {Channel}";
                         }
 
                         break;
                     case DeviceType.Core_Xt:
-                        result = $"Commander CORE XT Channel {Channel}";
+                        result = $"Sensor {Channel}";
 
                         break;
                 }
@@ -50,7 +50,7 @@ namespace FanControl.CommanderPro
         {
             CommanderInstance.Connect();
 
-            Value = CommanderInstance.GetFanSpeed(Channel);
+            Value = CommanderInstance.GetTemperature(Channel);
         }
     }
 }

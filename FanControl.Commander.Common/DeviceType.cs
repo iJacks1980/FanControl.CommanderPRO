@@ -1,4 +1,4 @@
-﻿namespace FanControl.CommanderPro
+﻿namespace FanControl.Commander.Common
 {
     public enum DeviceType
     {

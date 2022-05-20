@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FanControl.CommanderPro
+namespace FanControl.Commander.Common
 {
     public interface ICommander
     {
@@ -17,8 +17,6 @@ namespace FanControl.CommanderPro
 
         void Disconnect();
 
-        String GetFirmwareVersion();
-
         List<Int32> GetFanChannels();
 
         Int32 GetFanSpeed(Int32 channel);
@@ -30,6 +28,8 @@ namespace FanControl.CommanderPro
         Single GetTemperature(Int32 channel);
 
         void SetFanPower(Int32 channel, Int32 power);
+
+        void SetFanSpeed(Int32 channel, Int32 speed);
 
         #endregion
     }

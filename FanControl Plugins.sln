@@ -10,9 +10,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		FanControl.Plugins.dll = FanControl.Plugins.dll
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanControl.CommanderPro.UnitTests", "FanControl.CommanderPro.UnitTests\FanControl.CommanderPro.UnitTests.csproj", "{0D87632E-5D19-4F90-A581-6773E236A8E6}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{A279486C-2487-43A1-97B9-6664E7662EE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanControl.CommanderCore", "FanControl.CommanderCore\FanControl.CommanderCore.csproj", "{4B32ED29-C56C-440E-B490-E5DF5032E7F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanControl.CommanderCoreXt", "FanControl.CommanderCoreXt\FanControl.CommanderCoreXt.csproj", "{432F8002-9A87-4FC3-96D3-7C61CF259084}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FanControl.Commander.Common", "FanControl.Commander.Common\FanControl.Commander.Common.csproj", "{08A81983-815E-4039-B03D-D25A7869B1D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,14 +28,22 @@ Global
 		{B366E3EC-7DE5-46F6-8088-506943B19002}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B366E3EC-7DE5-46F6-8088-506943B19002}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B366E3EC-7DE5-46F6-8088-506943B19002}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D87632E-5D19-4F90-A581-6773E236A8E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D87632E-5D19-4F90-A581-6773E236A8E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D87632E-5D19-4F90-A581-6773E236A8E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D87632E-5D19-4F90-A581-6773E236A8E6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A279486C-2487-43A1-97B9-6664E7662EE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A279486C-2487-43A1-97B9-6664E7662EE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A279486C-2487-43A1-97B9-6664E7662EE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A279486C-2487-43A1-97B9-6664E7662EE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B32ED29-C56C-440E-B490-E5DF5032E7F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B32ED29-C56C-440E-B490-E5DF5032E7F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B32ED29-C56C-440E-B490-E5DF5032E7F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B32ED29-C56C-440E-B490-E5DF5032E7F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{432F8002-9A87-4FC3-96D3-7C61CF259084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{432F8002-9A87-4FC3-96D3-7C61CF259084}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{432F8002-9A87-4FC3-96D3-7C61CF259084}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{432F8002-9A87-4FC3-96D3-7C61CF259084}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08A81983-815E-4039-B03D-D25A7869B1D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08A81983-815E-4039-B03D-D25A7869B1D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08A81983-815E-4039-B03D-D25A7869B1D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08A81983-815E-4039-B03D-D25A7869B1D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

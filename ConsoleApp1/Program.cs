@@ -10,7 +10,7 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Select mode:");
             Console.WriteLine("Press 1 for Hardware mode");
-            Console.WriteLine("Press 2 for Software mode");
+            //Console.WriteLine("Press 2 for Software mode");
 
             var selection = Console.ReadKey(true);
 
@@ -20,10 +20,10 @@ namespace ConsoleApp1
                     HardwareMode();
 
                     break;
-                case ConsoleKey.D2:
-                    SoftwareMode();
+                //case ConsoleKey.D2:
+                //    SoftwareMode();
 
-                    break;
+                //    break;
             }
         }
 
@@ -31,46 +31,33 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Hardware mode...");
 
-            FanControl.CommanderPro.Core.CommanderCore commander = new FanControl.CommanderPro.Core.CommanderCore();
+            FanControl.CommanderCore.DeviceManager commander = new FanControl.CommanderCore.DeviceManager();
 
             commander.Connect();
 
             Boolean exitRequested = false;
 
-            String firmware;
-
             while (!exitRequested)
             {
-                firmware = commander.GetFirmwareVersion();
+                List<Int32> fanChannels = commander.GetFanChannels();
 
-                if (String.Equals(firmware, "0.0.0"))
+                foreach (Int32 channel in fanChannels)
                 {
-                    Console.WriteLine("Bad firmware data!");
+                    Int32 speed = commander.GetFanSpeed(channel);
+
+                    Console.WriteLine($"\tFan on channel {channel} speed: {speed}");
                 }
-                else
+
+                List<Int32> temperatureChannels = commander.GetTemperatureChannels();
+
+                foreach (Int32 channel in temperatureChannels)
                 {
-                    Console.WriteLine($"Firmware v{firmware}");
+                    Single temperature = commander.GetTemperature(channel);
 
-                    List<Int32> fanChannels = commander.GetFanChannels();
-
-                    foreach (Int32 channel in fanChannels)
-                    {
-                        Int32 speed = commander.GetFanSpeed(channel);
-
-                        Console.WriteLine($"\tFan on channel {channel} speed: {speed}");
-                    }
-
-                    List<Int32> temperatureChannels = commander.GetTemperatureChannels();
-
-                    foreach (Int32 channel in temperatureChannels)
-                    {
-                        Single temperature = commander.GetTemperature(channel);
-
-                        Console.WriteLine($"\tTemperature probe {channel}: {temperature}");
-                    }
-
-                    //commander.SetFanPower(3, 100);
+                    Console.WriteLine($"\tTemperature probe {channel}: {temperature}");
                 }
+
+                //commander.SetFanPower(3, 100);
 
                 if (Console.KeyAvailable)
                 {
@@ -88,30 +75,30 @@ namespace ConsoleApp1
             Console.ReadLine();
         }
 
-        private static void SoftwareMode()
-        {
-            Console.WriteLine("Software mode...");
+        //private static void SoftwareMode()
+        //{
+        //    Console.WriteLine("Software mode...");
 
-            FanControl.CommanderPro.Core.CommanderCoreSWMode commander = new FanControl.CommanderPro.Core.CommanderCoreSWMode();
+        //    FanControl.CommanderPro.Core.CommanderCoreSWMode commander = new FanControl.CommanderPro.Core.CommanderCoreSWMode();
 
-            //commander.Connect();
+        //    //commander.Connect();
 
-            Boolean exitRequested = false;
+        //    Boolean exitRequested = false;
 
-            while (!exitRequested)
-            {
+        //    while (!exitRequested)
+        //    {
 
 
-                if (Console.KeyAvailable)
-                {
-                    exitRequested = true;
-                }
+        //        if (Console.KeyAvailable)
+        //        {
+        //            exitRequested = true;
+        //        }
 
-                TimeSpan pause = new TimeSpan(0, 0, 0, 0, 1000);
+        //        TimeSpan pause = new TimeSpan(0, 0, 0, 0, 1000);
 
-                Task delay = Task.Delay(pause);
-                delay.Wait();
-            }
-        }
+        //        Task delay = Task.Delay(pause);
+        //        delay.Wait();
+        //    }
+        //}
     }
 }

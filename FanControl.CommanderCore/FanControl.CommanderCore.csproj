@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A279486C-2487-43A1-97B9-6664E7662EE3}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>ConsoleApp1</RootNamespace>
-    <AssemblyName>ConsoleApp1</AssemblyName>
+    <ProjectGuid>{4B32ED29-C56C-440E-B490-E5DF5032E7F1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FanControl.CommanderCore</RootNamespace>
+    <AssemblyName>FanControl.CommanderCore</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FanControl.Plugins">
+      <HintPath>..\FanControl.Plugins.dll</HintPath>
+    </Reference>
+    <Reference Include="HidSharp, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HidSharp.2.1.0\lib\net35\HidSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,25 +47,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="DeviceManager.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Device.cs" />
+    <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <ProjectReference Include="..\FanControl.Commander.Common\FanControl.Commander.Common.csproj">
+      <Project>{08a81983-815e-4039-b03d-d25a7869b1d8}</Project>
+      <Name>FanControl.Commander.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FanControl.CommanderCoreXt\FanControl.CommanderCoreXt.csproj">
-      <Project>{432f8002-9a87-4fc3-96d3-7c61cf259084}</Project>
-      <Name>FanControl.CommanderCoreXt</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FanControl.CommanderCore\FanControl.CommanderCore.csproj">
-      <Project>{4b32ed29-c56c-440e-b490-e5df5032e7f1}</Project>
-      <Name>FanControl.CommanderCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FanControl.CommanderPro\FanControl.CommanderPro.csproj">
-      <Project>{b366e3ec-7de5-46f6-8088-506943b19002}</Project>
-      <Name>FanControl.CommanderPro</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

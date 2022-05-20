@@ -1,9 +1,20 @@
 ﻿using System;
 
-namespace FanControl.CommanderPro.Pro
+namespace FanControl.CommanderPro
 {
     internal class Constants
     {
+        public const String ERROR_LOG_FILE_NAME = "CommanderPRO.err.log";
+
+#if DEBUG
+        public const String TRACE_LOG_FILE_NAME = "CommanderPRO.trc.log";
+#else
+        public const String TRACE_LOG_FILE_NAME = "";
+#endif
+
+        public const Int32 VENDOR_ID = 0x1b1c;
+        public const Int32 PRODUCT_ID = 0x0c10;
+
         public const Int32 COMMAND_SIZE = 64;
         public const Int32 RESPONSE_SIZE = 16;
 
