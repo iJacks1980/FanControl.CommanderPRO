@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FanControl.Commander.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,6 +29,8 @@ namespace FanControl.CommanderPro
 
         internal Device(Int32 deviceIndex, HidSharp.HidDevice hidDevice)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device created");
+
             DeviceIndex = deviceIndex;
             HidDevice = hidDevice;
         }
@@ -50,6 +53,8 @@ namespace FanControl.CommanderPro
 
         internal void Connect()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.Connect()");
+
             if (!IsConnected)
             {
                 HidSharp.OpenConfiguration openConfiguration = new HidSharp.OpenConfiguration();
@@ -64,10 +69,7 @@ namespace FanControl.CommanderPro
 
                     if (IsConnected)
                     {
-                        if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                        {
-                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Connected to device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
-                        }
+                        Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Connected to device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})");
 
                         GetFirmwareVersion();
                         GetFanChannels();
@@ -78,22 +80,18 @@ namespace FanControl.CommanderPro
                 {
                     IsConnected = false;
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Failed to connect to device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Failed to connect to device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})");
                 }
             }
         }
 
         internal void Disconnect()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.Disconnect()");
+
             if (!IsConnected) return;
 
-            if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-            {
-                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Disconnecting from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
-            }
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Disconnecting from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})");
 
             HidStream.Dispose();
             HidStream = null;
@@ -108,16 +106,15 @@ namespace FanControl.CommanderPro
 
         internal Int32 GetFanSpeed(Int32 channel)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.GetFanSpeed()");
+
             Int32 result = 0;
 
             if (IsConnected && FanChannelMap.ContainsKey(channel))
             {
                 try
                 {
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Getting fan speed for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Getting fan speed for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})");
 
                     ClearOutputBuffer();
 
@@ -127,21 +124,17 @@ namespace FanControl.CommanderPro
                     HidStream.Write(outbuf);
                     HidStream.Read(inbuf);
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Raw fan speed data for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {BitConverter.ToString(inbuf)}" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Raw fan speed data for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {BitConverter.ToString(inbuf)}");
 
                     result = 256 * inbuf[2] + inbuf[3];
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Converted fan speed data for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {result}" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Converted fan speed data for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {result}");
                 }
                 catch (Exception exception)
                 {
-                    System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
+
+                    Disconnect();
 
                     IsConnected = false;
                 }
@@ -152,16 +145,15 @@ namespace FanControl.CommanderPro
 
         internal Int32 GetFanPower(Int32 channel)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.GetFanPower()");
+
             Int32 result = 0;
 
             if (IsConnected && FanChannelMap.ContainsKey(channel))
             {
                 try
                 {
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Getting fan power for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Getting fan power for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})");
 
                     ClearOutputBuffer();
 
@@ -171,21 +163,17 @@ namespace FanControl.CommanderPro
                     HidStream.Write(outbuf);
                     HidStream.Read(inbuf);
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Raw fan power data for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {BitConverter.ToString(inbuf)}" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Raw fan power data for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {BitConverter.ToString(inbuf)}");
 
-                    result = 256 * inbuf[2] + inbuf[3];
+                    result = 256 * inbuf[1] + inbuf[2];
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Converted fan power data for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {result}" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Converted fan power data for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {result}");
                 }
                 catch (Exception exception)
                 {
-                    System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
+
+                    Disconnect();
 
                     IsConnected = false;
                 }
@@ -196,14 +184,13 @@ namespace FanControl.CommanderPro
 
         internal void SetFanSpeed(Int32 channel, Int32 speed)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.SetFanSpeed()");
+
             if (IsConnected && FanChannelMap.ContainsKey(channel))
             {
                 try
                 {
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Setting fan speed for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) to: {speed}" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Setting fan speed for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) to: {speed}");
 
                     ClearOutputBuffer();
 
@@ -217,7 +204,9 @@ namespace FanControl.CommanderPro
                 }
                 catch (Exception exception)
                 {
-                    System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
+
+                    Disconnect();
 
                     IsConnected = false;
                 }
@@ -226,14 +215,13 @@ namespace FanControl.CommanderPro
 
         internal void SetFanPower(Int32 channel, Int32 power)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.SetFanPower()");
+
             if (IsConnected && FanChannelMap.ContainsKey(channel) && power >= 0 && power <= 100)
             {
                 try
                 {
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Setting fan power for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) to: {power}" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Setting fan power for channel {FanChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) to: {power}");
 
                     ClearOutputBuffer();
 
@@ -246,7 +234,9 @@ namespace FanControl.CommanderPro
                 }
                 catch (Exception exception)
                 {
-                    System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
+
+                    Disconnect();
 
                     IsConnected = false;
                 }
@@ -255,16 +245,15 @@ namespace FanControl.CommanderPro
 
         internal Single GetTemperature(Int32 channel)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.GetTemperature()");
+
             Single result = 0;
 
             if (IsConnected && TemperatureChannelMap.ContainsKey(channel))
             {
                 try
                 {
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Getting temperature for channel {TemperatureChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Getting temperature for channel {TemperatureChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})");
 
                     ClearOutputBuffer();
 
@@ -274,21 +263,15 @@ namespace FanControl.CommanderPro
                     HidStream.Write(outbuf);
                     HidStream.Read(inbuf);
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Raw temperature data for channel {TemperatureChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {BitConverter.ToString(inbuf)}" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Raw temperature data for channel {TemperatureChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {BitConverter.ToString(inbuf)}");
 
                     result = BitConverter.ToUInt16(inbuf, 1) / 100;
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Converted temperature data for channel {TemperatureChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {result}" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Converted temperature data for channel {TemperatureChannelMap[channel]} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {result}");
                 }
                 catch (Exception exception)
                 {
-                    System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
 
                     IsConnected = false;
                 }
@@ -303,6 +286,8 @@ namespace FanControl.CommanderPro
 
         private String GetFirmwareVersion()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.GetFirmwareVersion()");
+
             if (!IsConnected)
             {
                 Connect();
@@ -310,11 +295,8 @@ namespace FanControl.CommanderPro
 
             if (IsConnected && String.Equals(FirmwareVersion, "0.0.0", StringComparison.InvariantCultureIgnoreCase))
             {
-                if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                {
-                    System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Attempting to get Commander PRO firmware version from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
-                }
-
+                Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Attempting to get Commander PRO firmware version from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})");
+                
                 ClearOutputBuffer();
 
                 outbuf[1] = Constants.READ_FIRMWARE_VERSION;
@@ -332,14 +314,11 @@ namespace FanControl.CommanderPro
                         else { FirmwareVersion = FirmwareVersion + inbuf[i]; }
                     }
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Commander PRO Firmware from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = v{FirmwareVersion}" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Commander PRO Firmware from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = v{FirmwareVersion}");
                 }
                 catch (Exception exception)
                 {
-                    System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
 
                     IsConnected = false;
                 }
@@ -350,17 +329,16 @@ namespace FanControl.CommanderPro
 
         private void GetFanChannels()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.GetFanChannels()");
+
             if (IsConnected && !FanChannels.Any())
             {
-                try
+                Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Getting fan channels from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})");
+
+                String fanMask = GetFanMask();
+
+                if (!String.IsNullOrWhiteSpace(fanMask))
                 {
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Getting fan channels from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
-                    }
-
-                    String fanMask = GetFanMask();
-
                     try
                     {
                         for (Int32 j = 0; j < fanMask.Length; j++)
@@ -380,45 +358,35 @@ namespace FanControl.CommanderPro
                             }
                         }
 
-                        if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
+                        foreach (Int32 channel in FanChannels)
                         {
-                            foreach (Int32 channel in FanChannels)
-                            {
-                                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"\tFound fan on channel {channel} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
-                            }
+                            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"\tFound fan on channel {channel} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})");
                         }
                     }
                     catch (Exception exception)
                     {
-                        System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                        Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
+
+                        Disconnect();
 
                         IsConnected = false;
                     }
-                }
-                catch (Exception exception)
-                {
-                    System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
-                }
-                finally
-                {
-                    //SendCommand(Constants.COMMAND_SLEEP);
                 }
             }
         }
 
         private void GetTemperatureChannels()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.GetTemperatureChannels()");
+
             if (IsConnected && !TemperatureChannels.Any())
             {
-                try
+                Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Getting temperature channels from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})");
+
+                String temperatureMask = GetTemperatureMask();
+
+                if (!String.IsNullOrWhiteSpace(temperatureMask))
                 {
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Getting temperature channels from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
-                    }
-
-                    String temperatureMask = GetTemperatureMask();
-
                     try
                     {
                         for (Int32 j = 0; j < temperatureMask.Length; j++)
@@ -439,32 +407,25 @@ namespace FanControl.CommanderPro
                     }
                     catch (Exception exception)
                     {
-                        System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                        Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
+
+                        Disconnect();
 
                         IsConnected = false;
                     }
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
+                    foreach (Int32 channel in TemperatureChannels)
                     {
-                        foreach (Int32 channel in TemperatureChannels)
-                        {
-                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"\tFound temperature probe on channel {channel} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
-                        }
+                        Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"\tFound temperature probe on channel {channel} from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})");
                     }
-                }
-                catch (Exception exception)
-                {
-                    System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
-                }
-                finally
-                {
-                    //SendCommand(Constants.COMMAND_SLEEP);
                 }
             }
         }
 
         private void ClearOutputBuffer()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.ClearOutputBuffer()");
+
             for (Int32 i = 0; i < 64; ++i)
             {
                 outbuf[i] = 0x00;
@@ -473,6 +434,8 @@ namespace FanControl.CommanderPro
 
         private String GetFanMask()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.GetFanMask()");
+
             String result = "";
 
             if (IsConnected)
@@ -486,24 +449,20 @@ namespace FanControl.CommanderPro
                     HidStream.Write(outbuf);
                     HidStream.Read(inbuf);
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Raw fan mask data from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {BitConverter.ToString(inbuf)}" + Environment.NewLine);
-                    }
-
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Raw fan mask data from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {BitConverter.ToString(inbuf)}");
+                    
                     for (Int32 i = 2; i < 8; ++i)
                     {
                         result = result + inbuf[i].ToString();
                     }
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Converted fan mask data from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {result}" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Converted fan mask data from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {result}");
                 }
                 catch (Exception exception)
                 {
-                    System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
+
+                    Disconnect();
 
                     IsConnected = false;
                 }
@@ -519,6 +478,8 @@ namespace FanControl.CommanderPro
 
         private String GetTemperatureMask()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Device.GetTemperatureMask()");
+
             String result = "";
 
             if (IsConnected)
@@ -532,24 +493,20 @@ namespace FanControl.CommanderPro
                     HidStream.Write(outbuf);
                     HidStream.Read(inbuf);
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Raw temperature mask data from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {BitConverter.ToString(inbuf)}" + Environment.NewLine);
-                    }
-
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Raw temperature mask data from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {BitConverter.ToString(inbuf)}");
+                    
                     for (Int32 i = 2; i < 6; ++i)
                     {
                         result = result + inbuf[i].ToString();
                     }
 
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-                    {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Converted temperature mask data from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {result}" + Environment.NewLine);
-                    }
+                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Converted temperature mask data from device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()}) = {result}");
                 }
                 catch (Exception exception)
                 {
-                    System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
+
+                    Disconnect();
 
                     IsConnected = false;
                 }

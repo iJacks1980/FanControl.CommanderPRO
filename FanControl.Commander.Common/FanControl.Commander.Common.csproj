@@ -49,6 +49,7 @@
     <Compile Include="FanSensor.cs" />
     <Compile Include="FanType.cs" />
     <Compile Include="ICommander.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemperatureSensor.cs" />
   </ItemGroup>

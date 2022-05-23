@@ -50,7 +50,7 @@ namespace FanControl.CommanderCoreXt
         {
             if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
             {
-                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Plugin closing" + Environment.NewLine);
+                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Plugin closing" + Environment.NewLine);
             }
 
             if (CommanderCore != null)
@@ -63,7 +63,7 @@ namespace FanControl.CommanderCoreXt
         {
             if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
             {
-                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Plugin initializing" + Environment.NewLine);
+                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Plugin initializing" + Environment.NewLine);
             }
 
             CommanderCore = new DeviceManager();
@@ -75,7 +75,7 @@ namespace FanControl.CommanderCoreXt
         {
             if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
             {
-                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Plugin loading" + Environment.NewLine);
+                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Plugin loading" + Environment.NewLine);
             }
 
             List<FanSensor> _fanSensors = new List<FanSensor>();
@@ -102,7 +102,7 @@ namespace FanControl.CommanderCoreXt
         {
             if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
             {
-                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Plugin Update method called" + Environment.NewLine);
+                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Plugin Update method called" + Environment.NewLine);
             }
         }
 

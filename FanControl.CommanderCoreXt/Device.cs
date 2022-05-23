@@ -64,7 +64,7 @@ namespace FanControl.CommanderCoreXt
                     {
                         if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
                         {
-                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Connected to device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
+                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Connected to device: {HidDevice.GetProductName()} ({HidDevice.GetSerialNumber()})" + Environment.NewLine);
                         }
 
                         GetFirmwareVersion();
@@ -85,7 +85,7 @@ namespace FanControl.CommanderCoreXt
 
             if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
             {
-                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Disconnecting from Commander CORE" + Environment.NewLine);
+                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Disconnecting from Commander CORE" + Environment.NewLine);
             }
 
             SendCommand(Constants.COMMAND_RESET, null, false);
@@ -112,7 +112,7 @@ namespace FanControl.CommanderCoreXt
                 {
                     if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
                     {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Getting fan channel {channel} speed" + Environment.NewLine);
+                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Getting fan channel {channel} speed" + Environment.NewLine);
                     }
 
                     //SendCommand(Constants.COMMAND_WAKE);
@@ -136,7 +136,7 @@ namespace FanControl.CommanderCoreXt
 
                             if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
                             {
-                                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"\tFan channel {channel} speed: {result}" + Environment.NewLine);
+                                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} \tFan channel {channel} speed: {result}" + Environment.NewLine);
                             }
 
                             break;
@@ -166,7 +166,7 @@ namespace FanControl.CommanderCoreXt
                 {
                     if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
                     {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Getting temperature from channel {channel}" + Environment.NewLine);
+                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Getting temperature from channel {channel}" + Environment.NewLine);
                     }
 
                     //SendCommand(Constants.COMMAND_WAKE);
@@ -192,7 +192,7 @@ namespace FanControl.CommanderCoreXt
 
                                 if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
                                 {
-                                    System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"\tTemperature channel {channel}: {result}" + Environment.NewLine);
+                                    System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} \tTemperature channel {channel}: {result}" + Environment.NewLine);
                                 }
                             }
 
@@ -228,7 +228,7 @@ namespace FanControl.CommanderCoreXt
             {
                 if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
                 {
-                    System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Attempting to get Commander CORE firmware version" + Environment.NewLine);
+                    System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Attempting to get Commander CORE firmware version" + Environment.NewLine);
                 }
 
                 try
@@ -243,14 +243,14 @@ namespace FanControl.CommanderCoreXt
 
                         if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
                         {
-                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Commander CORE Firmware v{FirmwareVersion}" + Environment.NewLine);
+                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Commander CORE Firmware v{FirmwareVersion}" + Environment.NewLine);
                         }
                     }
                     else
                     {
                         if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
                         {
-                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Bad firmware version v{FirmwareVersion}" + Environment.NewLine);
+                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Bad firmware version v{FirmwareVersion}" + Environment.NewLine);
                         }
 
                         Disconnect();
@@ -280,7 +280,7 @@ namespace FanControl.CommanderCoreXt
                 {
                     if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
                     {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Getting fan channels" + Environment.NewLine);
+                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Getting fan channels" + Environment.NewLine);
                     }
 
                     //SendCommand(Constants.COMMAND_WAKE);
@@ -310,7 +310,7 @@ namespace FanControl.CommanderCoreXt
                     {
                         foreach (Int32 channel in FanChannels)
                         {
-                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"\tFound fan on channel {channel}" + Environment.NewLine);
+                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} \tFound fan on channel {channel}" + Environment.NewLine);
                         }
                     }
                 }
@@ -333,7 +333,7 @@ namespace FanControl.CommanderCoreXt
                 {
                     if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
                     {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Getting temperature channels" + Environment.NewLine);
+                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Getting temperature channels" + Environment.NewLine);
                     }
 
                     //SendCommand(Constants.COMMAND_WAKE);
@@ -363,7 +363,7 @@ namespace FanControl.CommanderCoreXt
                     {
                         foreach (Int32 channel in TemperatureChannels)
                         {
-                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"\tFound temperature probe on channel {channel}" + Environment.NewLine);
+                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} \tFound temperature probe on channel {channel}" + Environment.NewLine);
                         }
                     }
                 }

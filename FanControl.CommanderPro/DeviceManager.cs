@@ -9,6 +9,8 @@ namespace FanControl.CommanderPro
     {
         #region Private objects
 
+        private readonly Object devicesLock = new Object();
+
         private Dictionary<Int32, Device> devices;
 
         #endregion
@@ -24,6 +26,8 @@ namespace FanControl.CommanderPro
         public DeviceManager()
         {
             devices = new Dictionary<Int32, Device>();
+
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager created");
         }
 
         #endregion
@@ -32,12 +36,11 @@ namespace FanControl.CommanderPro
 
         public void Connect()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.Connect()");
+
             if (AreAllDevicesConnected()) return;
 
-            if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-            {
-                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Looking for Commander PRO devices" + Environment.NewLine);
-            }
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Looking for Commander PRO devices");
 
             try
             {
@@ -53,31 +56,49 @@ namespace FanControl.CommanderPro
             }
             catch (Exception exception)
             {
-                System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
         }
 
         public void Disconnect()
         {
-            if (devices != null)
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.Disconnect()");
+
+            try
             {
-                foreach (Device device in devices.Values)
+                if (devices != null)
                 {
-                    device.Disconnect();
+                    foreach (Device device in devices.Values)
+                    {
+                        device.Disconnect();
+                    }
                 }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
         }
 
         public List<Int32> GetFanChannels()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetFanChannels()");
+
             List<Int32> result = new List<Int32>();
 
-            if (devices != null)
+            try
             {
-                foreach (Device device in devices.Values)
+                if (devices != null)
                 {
-                    result.AddRange(device.FanChannels);
+                    foreach (Device device in devices.Values)
+                    {
+                        result.AddRange(device.FanChannels);
+                    }
                 }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
 
             return result;
@@ -85,11 +106,20 @@ namespace FanControl.CommanderPro
 
         public Int32 GetFanSpeed(Int32 channel)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetFanSpeed()");
+
             Int32 result = 0;
 
-            if (devices != null)
+            try
             {
-                result = devices.First(x => x.Value.FanChannels.Contains(channel)).Value.GetFanSpeed(channel);
+                if (devices != null)
+                {
+                    result = devices.First(x => x.Value.FanChannels.Contains(channel)).Value.GetFanSpeed(channel);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
 
             return result;
@@ -97,11 +127,20 @@ namespace FanControl.CommanderPro
 
         public Int32 GetFanPower(Int32 channel)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetFanPower()");
+
             Int32 result = 0;
 
-            if (devices != null)
+            try
             {
-                result = devices.First(x => x.Value.FanChannels.Contains(channel)).Value.GetFanPower(channel);
+                if (devices != null)
+                {
+                    result = devices.First(x => x.Value.FanChannels.Contains(channel)).Value.GetFanPower(channel);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
 
             return result;
@@ -109,30 +148,57 @@ namespace FanControl.CommanderPro
 
         public void SetFanSpeed(Int32 channel, Int32 speed)
         {
-            if (devices != null)
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.SetFanSpeed()");
+
+            try
             {
-                devices.First(x => x.Value.FanChannels.Contains(channel)).Value.SetFanSpeed(channel, speed);
+                if (devices != null)
+                {
+                    devices.First(x => x.Value.FanChannels.Contains(channel)).Value.SetFanSpeed(channel, speed);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
         }
 
         public void SetFanPower(Int32 channel, Int32 power)
         {
-            if (devices != null)
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.SetFanPower()");
+
+            try
             {
-                devices.First(x => x.Value.FanChannels.Contains(channel)).Value.SetFanPower(channel, power);
+                if (devices != null)
+                {
+                    devices.First(x => x.Value.FanChannels.Contains(channel)).Value.SetFanPower(channel, power);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
         }
 
         public List<Int32> GetTemperatureChannels()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetTemperatureChannels()");
+
             List<Int32> result = new List<Int32>();
 
-            if (devices != null)
+            try
             {
-                foreach (Device device in devices.Values)
+                if (devices != null)
                 {
-                    result.AddRange(device.TemperatureChannels);
+                    foreach (Device device in devices.Values)
+                    {
+                        result.AddRange(device.TemperatureChannels);
+                    }
                 }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
 
             return result;
@@ -140,11 +206,20 @@ namespace FanControl.CommanderPro
 
         public Single GetTemperature(Int32 channel)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetTemperature()");
+
             Single result = 0;
 
-            if (devices != null)
+            try
             {
-                result = devices.First(x => x.Value.TemperatureChannels.Contains(channel)).Value.GetTemperature(channel);
+                if (devices != null)
+                {
+                    result = devices.First(x => x.Value.TemperatureChannels.Contains(channel)).Value.GetTemperature(channel);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
 
             return result;
@@ -156,17 +231,29 @@ namespace FanControl.CommanderPro
 
         private Boolean AreAllDevicesConnected()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.AreAllDevicesConnected()");
+
             Boolean result = false;
 
-            if (devices != null)
+            lock (devicesLock)
             {
-                if (!devices.Any())
+                try
                 {
-                    result = false;
+                    if (devices != null)
+                    {
+                        if (!devices.Any())
+                        {
+                            result = false;
+                        }
+                        else
+                        {
+                            result = devices.All(x => x.Value.IsConnected);
+                        }
+                    }
                 }
-                else
+                catch (Exception exception)
                 {
-                    result = devices.All(x => x.Value.IsConnected);
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
                 }
             }
 
@@ -175,19 +262,31 @@ namespace FanControl.CommanderPro
 
         private void GetDevices()
         {
-            IEnumerable<HidSharp.HidDevice> hidDevices = HidSharp.DeviceList.Local.GetHidDevices(Constants.VENDOR_ID, Constants.PRODUCT_ID);
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetDevices()");
 
-            if (hidDevices != null)
+            lock (devicesLock)
             {
-                //Order found devices by serial number - so if there are multiple devices they should be found in the same order.
-                foreach (HidSharp.HidDevice hidDevice in hidDevices.OrderBy(x => x.GetSerialNumber()))
+                try
                 {
-                    if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
+                    if (!devices.Any())
                     {
-                        System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Found Commander PRO device with S/N: {hidDevice.GetSerialNumber()}" + Environment.NewLine);
-                    }
+                        IEnumerable<HidSharp.HidDevice> hidDevices = HidSharp.DeviceList.Local.GetHidDevices(Constants.VENDOR_ID, Constants.PRODUCT_ID);
 
-                    devices.Add(devices.Count + 1, new Device(devices.Count + 1, hidDevice));
+                        if (hidDevices != null)
+                        {
+                            //Order found devices by serial number - so if there are multiple devices they should be found in the same order.
+                            foreach (HidSharp.HidDevice hidDevice in hidDevices.OrderBy(x => x.GetSerialNumber()))
+                            {
+                                Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Found Commander PRO device with S/N: {hidDevice.GetSerialNumber()}");
+
+                                devices.Add(devices.Count + 1, new Device(devices.Count + 1, hidDevice));
+                            }
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
                 }
             }
         }

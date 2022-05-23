@@ -89,7 +89,7 @@ namespace FanControl.CommanderPro
         {
             if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
             {
-                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Plugin Update method called" + Environment.NewLine);
+                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Plugin Update method called" + Environment.NewLine);
             }
         }
 

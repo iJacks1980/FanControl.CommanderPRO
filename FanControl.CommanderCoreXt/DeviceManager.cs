@@ -53,7 +53,7 @@ namespace FanControl.CommanderCoreXt
 
             if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
             {
-                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Looking for Commander CORE XT devices" + Environment.NewLine);
+                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Looking for Commander CORE XT devices" + Environment.NewLine);
             }
 
             try
@@ -264,7 +264,7 @@ namespace FanControl.CommanderCoreXt
                     {
                         if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
                         {
-                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Found Commander CORE XT device with S/N: {hidDevice.GetSerialNumber()}" + Environment.NewLine);
+                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"{DateTime.UtcNow:R} Found Commander CORE XT device with S/N: {hidDevice.GetSerialNumber()}" + Environment.NewLine);
                         }
 
                         devices.Add(devices.Count + 1, new Device(devices.Count + 1, hidDevice));

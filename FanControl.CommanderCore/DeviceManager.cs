@@ -9,6 +9,8 @@ namespace FanControl.CommanderCore
     {
         #region Private objects
 
+        private readonly Object devicesLock = new Object();
+
         private Dictionary<Int32, Device> devices;
 
         #endregion
@@ -23,24 +25,9 @@ namespace FanControl.CommanderCore
 
         public DeviceManager()
         {
-            try
-            {
-                if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME) && System.IO.File.Exists(Constants.TRACE_LOG_FILE_NAME))
-                {
-                    System.IO.File.Delete(Constants.TRACE_LOG_FILE_NAME);
-                }
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager created");
 
-                if (!String.IsNullOrWhiteSpace(Constants.ERROR_LOG_FILE_NAME) && System.IO.File.Exists(Constants.ERROR_LOG_FILE_NAME))
-                {
-                    System.IO.File.Delete(Constants.ERROR_LOG_FILE_NAME);
-                }
-
-                devices = new Dictionary<Int32, Device>();
-            }
-            catch (Exception exception)
-            {
-
-            }
+            devices = new Dictionary<Int32, Device>();
         }
 
         #endregion
@@ -49,12 +36,11 @@ namespace FanControl.CommanderCore
 
         public void Connect()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.Connect()");
+
             if (AreAllDevicesConnected()) return;
 
-            if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
-            {
-                System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, "Looking for Commander CORE devices" + Environment.NewLine);
-            }
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "Looking for Commander CORE devices");
 
             try
             {
@@ -70,31 +56,49 @@ namespace FanControl.CommanderCore
             }
             catch (Exception exception)
             {
-                System.IO.File.AppendAllText(Constants.ERROR_LOG_FILE_NAME, exception.ToString() + Environment.NewLine);
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
         }
 
         public void Disconnect()
         {
-            if (devices != null)
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.Disconnect()");
+
+            try
             {
-                foreach (Device device in devices.Values)
+                if (devices != null)
                 {
-                    device.Disconnect();
+                    foreach (Device device in devices.Values)
+                    {
+                        device.Disconnect();
+                    }
                 }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
         }
 
         public List<Int32> GetFanChannels()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetFanChannels()");
+
             List<Int32> result = new List<Int32>();
 
-            if (devices != null)
+            try
             {
-                foreach (Device device in devices.Values)
+                if (devices != null)
                 {
-                    result.AddRange(device.FanChannels);
+                    foreach (Device device in devices.Values)
+                    {
+                        result.AddRange(device.FanChannels);
+                    }
                 }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
 
             return result;
@@ -102,11 +106,20 @@ namespace FanControl.CommanderCore
 
         public Int32 GetFanSpeed(Int32 channel)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetFanSpeed()");
+
             Int32 result = 0;
 
-            if (devices != null)
+            try
             {
-                result = devices.First(x => x.Value.FanChannels.Contains(channel)).Value.GetFanSpeed(channel);
+                if (devices != null)
+                {
+                    result = devices.First(x => x.Value.FanChannels.Contains(channel)).Value.GetFanSpeed(channel);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
 
             return result;
@@ -114,19 +127,51 @@ namespace FanControl.CommanderCore
 
         public Int32 GetFanPower(Int32 channel)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetFanPower()");
+
             Int32 result = 0;
+
+            try
+            {
+
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
+            }
 
             return result;
         }
 
         public void SetFanSpeed(Int32 channel, Int32 speed)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.SetFanSpeed()");
 
+            try
+            {
+
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
+            }
         }
 
         public void SetFanPower(Int32 channel, Int32 power)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.SetFanPower()");
 
+            try
+            {
+                if (devices != null)
+                {
+                    devices.First(x => x.Value.FanChannels.Contains(channel)).Value.SetFanPower(channel, power);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
+            }
         }
 
         //public void SetFanPower(Int32 channel, Int32 power)
@@ -203,14 +248,23 @@ namespace FanControl.CommanderCore
 
         public List<Int32> GetTemperatureChannels()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetTemperatureChannels()");
+
             List<Int32> result = new List<Int32>();
 
-            if (devices != null)
+            try
             {
-                foreach (Device device in devices.Values)
+                if (devices != null)
                 {
-                    result.AddRange(device.TemperatureChannels);
+                    foreach (Device device in devices.Values)
+                    {
+                        result.AddRange(device.TemperatureChannels);
+                    }
                 }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
 
             return result;
@@ -218,11 +272,20 @@ namespace FanControl.CommanderCore
 
         public Single GetTemperature(Int32 channel)
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetTemperature()");
+
             Single result = 0;
 
-            if (devices != null)
+            try
             {
-                result = devices.First(x => x.Value.TemperatureChannels.Contains(channel)).Value.GetTemperature(channel);
+                if (devices != null)
+                {
+                    result = devices.First(x => x.Value.TemperatureChannels.Contains(channel)).Value.GetTemperature(channel);
+                }
+            }
+            catch (Exception exception)
+            {
+                Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
             }
 
             return result;
@@ -234,17 +297,29 @@ namespace FanControl.CommanderCore
 
         private Boolean AreAllDevicesConnected()
         {
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.AreAllDevicesConnected()");
+
             Boolean result = false;
 
-            if (devices != null)
+            lock (devicesLock)
             {
-                if (!devices.Any())
+                try
                 {
-                    result = false;
+                    if (devices != null)
+                    {
+                        if (!devices.Any())
+                        {
+                            result = false;
+                        }
+                        else
+                        {
+                            result = devices.All(x => x.Value.IsConnected);
+                        }
+                    }
                 }
-                else
+                catch (Exception exception)
                 {
-                    result = devices.All(x => x.Value.IsConnected);
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
                 }
             }
 
@@ -253,26 +328,38 @@ namespace FanControl.CommanderCore
 
         private void GetDevices()
         {
-            IEnumerable<HidSharp.HidDevice> hidDevices = HidSharp.DeviceList.Local.GetHidDevices(Constants.VENDOR_ID, Constants.PRODUCT_ID);
+            Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, "DeviceManager.GetDevices()");
 
-            if (hidDevices != null)
+            lock (devicesLock)
             {
-                //Order found devices by serial number - so if there are multiple devices they should be found in the same order.
-                foreach (HidSharp.HidDevice hidDevice in hidDevices.OrderBy(x => x.GetSerialNumber()))
+                try
                 {
-                    if (hidDevice.ProductID == Constants.PRODUCT_ID && hidDevice.GetMaxInputReportLength() > 0 && hidDevice.GetMaxOutputReportLength() > 0)
+                    if (!devices.Any())
                     {
-                        if (!String.IsNullOrWhiteSpace(Constants.TRACE_LOG_FILE_NAME))
+                        IEnumerable<HidSharp.HidDevice> hidDevices = HidSharp.DeviceList.Local.GetHidDevices(Constants.VENDOR_ID, Constants.PRODUCT_ID);
+
+                        if (hidDevices != null)
                         {
-                            System.IO.File.AppendAllText(Constants.TRACE_LOG_FILE_NAME, $"Found Commander CORE device with S/N: {hidDevice.GetSerialNumber()}" + Environment.NewLine);
+                            //Order found devices by serial number - so if there are multiple devices they should be found in the same order.
+                            foreach (HidSharp.HidDevice hidDevice in hidDevices.OrderBy(x => x.GetSerialNumber()))
+                            {
+                                if (hidDevice.ProductID == Constants.PRODUCT_ID && hidDevice.GetMaxInputReportLength() > 0 && hidDevice.GetMaxOutputReportLength() > 0)
+                                {
+                                    Log.WriteToLog(Constants.TRACE_LOG_FILE_NAME, $"Found Commander CORE device with S/N: {hidDevice.GetSerialNumber()}");
+
+                                    devices.Add(devices.Count + 1, new Device(devices.Count + 1, hidDevice));
+                                }
+                                else
+                                {
+
+                                }
+                            }
                         }
-
-                        devices.Add(devices.Count + 1, new Device(devices.Count + 1, hidDevice));
                     }
-                    else
-                    {
-
-                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.WriteToLog(Constants.ERROR_LOG_FILE_NAME, exception.ToString());
                 }
             }
         }

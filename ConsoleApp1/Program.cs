@@ -12,7 +12,7 @@ namespace ConsoleApp1
             Console.WriteLine("Press 1 for Hardware mode");
             //Console.WriteLine("Press 2 for Software mode");
 
-            var selection = Console.ReadKey(true);
+            ConsoleKeyInfo selection = Console.ReadKey(true);
 
             switch (selection.Key)
             {
@@ -57,11 +57,25 @@ namespace ConsoleApp1
                     Console.WriteLine($"\tTemperature probe {channel}: {temperature}");
                 }
 
-                //commander.SetFanPower(3, 100);
-
                 if (Console.KeyAvailable)
                 {
-                    exitRequested = true;
+                    ConsoleKeyInfo keyPress = Console.ReadKey(true);
+
+                    switch (keyPress.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            exitRequested = true;
+
+                            break;
+                        case ConsoleKey.Add:
+                            commander.SetFanPower(5, 75);
+
+                            break;
+                        case ConsoleKey.Subtract:
+                            commander.SetFanPower(5, 25);
+
+                            break;
+                    }
                 }
 
                 TimeSpan pause = new TimeSpan(0, 0, 0, 0, 1000);
